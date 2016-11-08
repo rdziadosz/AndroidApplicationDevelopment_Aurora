@@ -1,4 +1,4 @@
-package eu.dziadosz.aurora;
+package eu.dziadosz.aurora.ui;
 
 import android.content.res.Configuration;
 import android.os.Bundle;

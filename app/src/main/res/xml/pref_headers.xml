@@ -3,22 +3,22 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="eu.dziadosz.aurora.SettingsActivity$GeneralPreferenceFragment"
+        android:fragment="eu.dziadosz.aurora.ui.SettingsActivity$GeneralPreferenceFragment"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/pref_header_general" />
 
     <header
-        android:fragment="eu.dziadosz.aurora.SettingsActivity$LocationPreferenceFragment"
+        android:fragment="eu.dziadosz.aurora.ui.SettingsActivity$LocationPreferenceFragment"
         android:icon="@drawable/ic_location_on_black_24dp"
         android:title="@string/pref_header_location" />
 
     <header
-        android:fragment="eu.dziadosz.aurora.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="eu.dziadosz.aurora.ui.SettingsActivity$NotificationPreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="@string/pref_header_notifications" />
 
     <header
-        android:fragment="eu.dziadosz.aurora.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="eu.dziadosz.aurora.ui.SettingsActivity$DataSyncPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
         android:title="@string/pref_header_data_sync" />
 

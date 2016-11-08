@@ -1,4 +1,4 @@
-package eu.dziadosz.aurora;
+package eu.dziadosz.aurora.ui;
 
 
 import android.annotation.TargetApi;
@@ -22,6 +22,8 @@ import android.view.MenuItem;
 import android.support.v4.app.NavUtils;
 
 import java.util.List;
+
+import eu.dziadosz.aurora.R;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -248,11 +250,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             addPreferencesFromResource(R.xml.pref_notification);
             setHasOptionsMenu(true);
 
-            // Bind the summaries of EditText/List/Dialog/Ringtone preferences
-            // to their values. When their values change, their summaries are
-            // updated to reflect the new value, per the Android Design
-            // guidelines.
-            bindPreferenceSummaryToValue(findPreference("notifications_new_message_ringtone"));
+            bindPreferenceSummaryToValue(findPreference("notifications_min_probability"));
+            bindPreferenceSummaryToValue(findPreference("notifications_min_kp"));
         }
 
         @Override

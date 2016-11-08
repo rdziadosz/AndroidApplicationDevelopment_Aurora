@@ -5,6 +5,21 @@
     <string name="welcome">Ale działa aplikacja kosmiczna, zorzę zwiastująca!</string>
     <string name="preference_file_key">eu.dziadosz.aurora.PREFERENCE_FILE_KEY</string>
 
+    <string-array name="error_type_array">
+        <item>No internet connection. Please check your internet connection and try \"Check now\" again.</item>
+        <item>Unable to download file, maybe auroa web page is temporary down. Please try \"Check now\" again later.</item>
+        <item>Unable to parse downloaded file. Please contact with author and wait for upgrade of this app.</item>
+    </string-array>
+
+    <string name="notify_title_error">Unable to fetch data!</string>
+    <string name="notify_title_aurora">Aurora is visible!</string>
+    <string name="notify_content_both">Aurora should be visible in your location! Go out!</string>
+    <string name="notify_content_probability">Probability is high!</string>
+    <string name="notify_content_kp">KP Index is high!</string>
+    <string name="notify_title_checking">Checking if auoroa is visible&#8230;</string>
+    <string name="notify_content_checking">Please wait… if aurora will be visible I notify you.</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_settings">Settings</string>
@@ -44,6 +59,8 @@
 
     <string name="pref_title_sync_frequency">Sync frequency</string>
     <string-array name="pref_sync_frequency_titles">
+        <item>1 minute</item>
+        <item>5 minutes</item>
         <item>15 minutes</item>
         <item>30 minutes</item>
         <item>1 hour</item>
@@ -52,6 +69,8 @@
         <item>Never</item>
     </string-array>
     <string-array name="pref_sync_frequency_values">
+        <item>1</item>
+        <item>5</item>
         <item>15</item>
         <item>30</item>
         <item>60</item>
@@ -79,7 +98,51 @@
     <!-- Example settings for Notifications -->
     <string name="pref_header_notifications">Notifications</string>
 
-    <string name="pref_title_new_message_notifications">New message notifications</string>
+    <string name="pref_title_new_message_notifications">Show notifications</string>
+
+    <string name="pref_title_min_probability">Minimum probability to notify</string>
+    <string-array name="pref_min_probability_titles">
+        <item>10&#65285;</item>
+        <item>20&#65285;</item>
+        <item>30&#65285;</item>
+        <item>40&#65285;</item>
+        <item>50&#65285;</item>
+        <item>60&#65285;</item>
+        <item>70&#65285;</item>
+        <item>80&#65285;</item>
+        <item>Disabled</item>
+    </string-array>
+    <string-array name="pref_min_probability_values">
+        <item>10</item>
+        <item>20</item>
+        <item>30</item>
+        <item>40</item>
+        <item>50</item>
+        <item>60</item>
+        <item>70</item>
+        <item>80</item>
+        <item>100</item>
+    </string-array>
+
+    <string name="pref_title_min_kp">Minimum KP Index to notify</string>
+    <string-array name="pref_min_kp_titles">
+        <item>KP Index > 3</item>
+        <item>KP Index > 4</item>
+        <item>KP Index > 5</item>
+        <item>KP Index > 6</item>
+        <item>KP Index > 7</item>
+        <item>KP Index > 8</item>
+        <item>Disabled</item>
+    </string-array>
+    <string-array name="pref_min_kp_values">
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>100</item>
+    </string-array>
 
     <string name="pref_title_ringtone">Ringtone</string>
     <string name="pref_ringtone_silent">Silent</string>

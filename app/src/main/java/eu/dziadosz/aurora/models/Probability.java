@@ -1,4 +1,4 @@
-package eu.dziadosz.aurora;
+package eu.dziadosz.aurora.models;
 
 /**
  * Created by Radosław on 03.11.2016.
@@ -10,7 +10,7 @@ public class Probability {
     private Long time;
     private Long valid;
 
-    Probability(Integer probability, Long time, Long valid) {
+    public Probability(Integer probability, Long time, Long valid) {
         setProbability(probability);
         setTime(time);
         setValid(valid);

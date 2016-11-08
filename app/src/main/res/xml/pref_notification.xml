@@ -4,24 +4,43 @@
          when checked/unchecked. -->
     <SwitchPreference
         android:defaultValue="true"
-        android:key="notifications_new_message"
+        android:key="notifications_aurora"
         android:title="@string/pref_title_new_message_notifications" />
 
     <!-- Allows the user to choose a ringtone in the 'notification' category. -->
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
     <!-- NOTE: RingtonePreference's summary should be set to its value by the activity code. -->
-    <RingtonePreference
-        android:defaultValue="content://settings/system/notification_sound"
-        android:dependency="notifications_new_message"
-        android:key="notifications_new_message_ringtone"
-        android:ringtoneType="notification"
+    <ListPreference
+        android:defaultValue="30"
+        android:dependency="notifications_aurora"
+        android:entries="@array/pref_min_probability_titles"
+        android:entryValues="@array/pref_min_probability_values"
+        android:key="notifications_min_probability"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_min_probability" />
+
+    <ListPreference
+        android:defaultValue="4"
+        android:dependency="notifications_aurora"
+        android:entries="@array/pref_min_kp_titles"
+        android:entryValues="@array/pref_min_kp_values"
+        android:key="notifications_min_kp"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+        android:title="@string/pref_title_min_kp" />
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:dependency="notifications_aurora"
+        android:key="notifications_aurora_ringtone"
         android:title="@string/pref_title_ringtone" />
 
     <!-- NOTE: This preference will be enabled only when the checkbox above is checked. -->
     <SwitchPreference
         android:defaultValue="true"
-        android:dependency="notifications_new_message"
-        android:key="notifications_new_message_vibrate"
+        android:dependency="notifications_aurora"
+        android:key="notifications_aurora_vibrate"
         android:title="@string/pref_title_vibrate" />
 
 </PreferenceScreen>

@@ -1,4 +1,4 @@
-package eu.dziadosz.aurora;
+package eu.dziadosz.aurora.models;
 
 /**
  * Created by Radosław on 03.11.2016.
@@ -8,7 +8,7 @@ public class KpIndex {
     private Double kp;
     private Long time;
 
-    KpIndex(Double kp,Long time){
+    public KpIndex(Double kp, Long time){
         setKp(kp);
         setTime(time);
     }
