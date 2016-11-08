@@ -149,7 +149,7 @@ public class AuroraService extends IntentService {
         Integer minProbability = Integer.parseInt(sharedPreferences.getString("notifications_min_probability", "30"));
 
         Integer nowKpIndex = sharedPreferences.getInt("probability_p", 0);
-        Integer nowProbability = sharedPreferences.getInt("kp_max_hour", 0);
+        Float nowProbability = sharedPreferences.getFloat("kp_max_hour", 0);
 
         Boolean time=(lastNotificationTime+NOTIFICATION_FREQUENCY_TIME)<System.currentTimeMillis();
         Boolean reachedProbability = nowProbability>minProbability;
@@ -316,6 +316,8 @@ public class AuroraService extends IntentService {
         sharedPreferences.edit().putInt("probability_p", data.getProbability().getProbability()).apply();
         sharedPreferences.edit().putLong("probability_g", data.getProbability().getTime()).apply();
         sharedPreferences.edit().putLong("probability_v", data.getProbability().getValid()).apply();
+
+        sharedPreferences.edit().putFloat("kp_max_hour", data.getMaxKpIndex()).apply();
 
         sharedPreferences.edit().putLong("success", System.currentTimeMillis()).apply();
         sharedPreferences.edit().putLong("updated", System.currentTimeMillis()).apply();

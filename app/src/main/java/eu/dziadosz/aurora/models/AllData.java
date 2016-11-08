@@ -2,6 +2,8 @@ package eu.dziadosz.aurora.models;
 
 import android.widget.ArrayAdapter;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -27,5 +29,9 @@ public class AllData {
 
     public void setProbability(Probability probability) {
         this.probability = probability;
+    }
+
+    public Float getMaxKpIndex() {
+        return Float.valueOf(Collections.max(kpIndexList).getKp().toString());
     }
 }

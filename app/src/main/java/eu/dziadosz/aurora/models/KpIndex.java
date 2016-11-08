@@ -4,7 +4,7 @@ package eu.dziadosz.aurora.models;
  * Created by Radosław on 03.11.2016.
  */
 
-public class KpIndex {
+public class KpIndex implements Comparable<KpIndex> {
     private Double kp;
     private Long time;
 
@@ -27,5 +27,9 @@ public class KpIndex {
 
     public void setTime(Long Long) {
         this.time = time;
+    }
+
+    public int compareTo(KpIndex other){
+        return Double.compare(this.getKp(),other.getKp());
     }
 }
