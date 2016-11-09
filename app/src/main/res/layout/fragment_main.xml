@@ -8,21 +8,16 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="eu.dziadosz.aurora.ui.MainFragment">
 
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chartProbability"
+        android:layout_alignParentLeft="true"
+        android:layout_width="160dp"
+        android:layout_height="160dp" />
 
-    <TextView
-        android:text="Probability"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/section_label"
-        android:layout_alignParentStart="true"
-        android:id="@+id/probabilityTextView" />
-
-    <TextView
-        android:text="KP"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/probabilityTextView"
-        android:layout_alignParentStart="true"
-        android:id="@+id/kpTextView" />
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chartKp"
+        android:layout_alignParentRight="true"
+        android:layout_width="160dp"
+        android:layout_height="160dp" />
 
 </RelativeLayout>

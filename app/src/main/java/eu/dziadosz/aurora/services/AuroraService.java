@@ -16,6 +16,7 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -30,7 +31,6 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +38,6 @@ import eu.dziadosz.aurora.R;
 import eu.dziadosz.aurora.models.AllData;
 import eu.dziadosz.aurora.models.KpIndex;
 import eu.dziadosz.aurora.models.Probability;
-import eu.dziadosz.aurora.receivers.AlarmReceiver;
 import eu.dziadosz.aurora.ui.MainActivity;
 
 /**
@@ -48,7 +47,7 @@ import eu.dziadosz.aurora.ui.MainActivity;
 public class AuroraService extends IntentService {
 
     private final static String DATA_BASE_URL = "http://dev.dziadosz.eu/android/aurora/get.php?";
-    private final static String LOG_TAG = AuroraService.class.getSimpleName();
+    public final static String LOG_TAG = AuroraService.class.getSimpleName();
     private URL DATA_URL;
 
     private static final long NOTIFICATION_FREQUENCY_TIME = 1000 * 60 * 60 * 3;
@@ -75,6 +74,7 @@ public class AuroraService extends IntentService {
         Intent intent = new Intent(context, AuroraService.class);
         context.startService(intent);
     }
+
 
     @Override
     protected void onHandleIntent(Intent intent) {
@@ -140,22 +140,33 @@ public class AuroraService extends IntentService {
 
     private void emitStatusUpdated(boolean pending) {
         notifyChecking(pending);
+        if (!pending) {
+            sendBroadcastMessage();
+            Log.v(LOG_TAG, "Send updated");
+        }
         //EventBus.getDefault().post(new StatusUpdatedEvent(pending));
     }
+
+
+    private void sendBroadcastMessage() {
+        Intent intent = new Intent(LOG_TAG + "Update");
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+    }
+
 
     private void generateNotification(AllData data) {
         Long lastNotificationTime = sharedPreferences.getLong("last_notification_time", 0);
         Integer minKpIndex = Integer.parseInt(sharedPreferences.getString("notifications_min_kp", "4"));
         Integer minProbability = Integer.parseInt(sharedPreferences.getString("notifications_min_probability", "30"));
 
-        Integer nowKpIndex = sharedPreferences.getInt("probability_p", 0);
-        Float nowProbability = sharedPreferences.getFloat("kp_max_hour", 0);
+        Integer nowProbability = sharedPreferences.getInt("probability_p", 0);
+        Float nowKpIndex = sharedPreferences.getFloat("kp_max_hour", 0);
 
-        Boolean time=(lastNotificationTime+NOTIFICATION_FREQUENCY_TIME)<System.currentTimeMillis();
-        Boolean reachedProbability = nowProbability>minProbability;
-        Boolean reachedKpIndex = nowKpIndex>minKpIndex;
+        Boolean time = (lastNotificationTime + NOTIFICATION_FREQUENCY_TIME) < System.currentTimeMillis();
+        Boolean reachedProbability = nowProbability > minProbability;
+        Boolean reachedKpIndex = nowKpIndex >= minKpIndex;
 
-        if(time && (reachedProbability||reachedKpIndex)) {
+        if (time && (reachedProbability || reachedKpIndex)) {
             CharSequence title = getString(R.string.notify_title_aurora);
             CharSequence content = null;
             if (reachedProbability && reachedKpIndex) {
@@ -179,7 +190,7 @@ public class AuroraService extends IntentService {
         CharSequence title = getString(R.string.notify_title_error);
         String content = getResources().getStringArray(R.array.error_type_array)[type - 1];
         CharSequence details = error.length() == 0 ? "" : "\n\n" + error;
-        showNotify(title, content + details, R.drawable.ic_notifications_black_24dp, 1, false, Color.RED);
+        showNotify(title, content + details, R.drawable.ic_notifications_black_24dp, 1, false, Color.MAGENTA);
     }
 
     private void notifyChecking(boolean visible) {
