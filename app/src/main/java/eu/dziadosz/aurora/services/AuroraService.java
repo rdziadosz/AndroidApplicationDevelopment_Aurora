@@ -1,11 +1,9 @@
 package eu.dziadosz.aurora.services;
 
-import android.app.AlarmManager;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -18,7 +16,6 @@ import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,7 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu.dziadosz.aurora.R;
-import eu.dziadosz.aurora.models.AllData;
+import eu.dziadosz.aurora.models.DataContainer;
 import eu.dziadosz.aurora.models.KpIndex;
 import eu.dziadosz.aurora.models.Probability;
 import eu.dziadosz.aurora.ui.MainActivity;
@@ -50,7 +47,7 @@ public class AuroraService extends IntentService {
     public final static String LOG_TAG = AuroraService.class.getSimpleName();
     private URL DATA_URL;
 
-    private static final long NOTIFICATION_FREQUENCY_TIME = 1000 * 60 * 60 * 3;
+    private static final long NOTIFICATION_FREQUENCY_TIME = 1000 * 60 * 60;
 
     private final static int MORSE_DOT = 200;
     private final static int MORSE_DASH = 500;
@@ -94,9 +91,11 @@ public class AuroraService extends IntentService {
                 emitStatusUpdated(true);
                 sharedPreferences.edit().putLong("updated", System.currentTimeMillis()).apply();
                 String fetchedData = fetchPage(DATA_URL);
-                AllData allData = getDataFromJsonStr(fetchedData);
-                storeData(allData);
-                generateNotification(allData);
+                DataContainer dataContainer = getDataFromJsonStr(fetchedData);
+                storeData(dataContainer);
+                if (sharedPreferences.getBoolean("notifications_aurora", true)) {
+                    generateNotification();
+                }
                 cancelNotify(1);
             } catch (IOException e) {
                 Log.e(LOG_TAG, "Unable to download file: " + DATA_URL.toString(), e);
@@ -144,7 +143,6 @@ public class AuroraService extends IntentService {
             sendBroadcastMessage();
             Log.v(LOG_TAG, "Send updated");
         }
-        //EventBus.getDefault().post(new StatusUpdatedEvent(pending));
     }
 
 
@@ -154,7 +152,7 @@ public class AuroraService extends IntentService {
     }
 
 
-    private void generateNotification(AllData data) {
+    private void generateNotification() {
         Long lastNotificationTime = sharedPreferences.getLong("last_notification_time", 0);
         Integer minKpIndex = Integer.parseInt(sharedPreferences.getString("notifications_min_kp", "4"));
         Integer minProbability = Integer.parseInt(sharedPreferences.getString("notifications_min_probability", "30"));
@@ -176,7 +174,8 @@ public class AuroraService extends IntentService {
             } else {
                 content = getString(R.string.notify_content_kp);
             }
-            showNotify(title, content, R.drawable.ic_notifications_black_24dp, 0, true, Color.YELLOW);
+            showNotify(title, content, R.drawable.ic_notifications_black_24dp, 0, true, Color.MAGENTA);
+
             sharedPreferences.edit().putLong("last_notification_time", System.currentTimeMillis()).apply();
         }
     }
@@ -190,7 +189,7 @@ public class AuroraService extends IntentService {
         CharSequence title = getString(R.string.notify_title_error);
         String content = getResources().getStringArray(R.array.error_type_array)[type - 1];
         CharSequence details = error.length() == 0 ? "" : "\n\n" + error;
-        showNotify(title, content + details, R.drawable.ic_notifications_black_24dp, 1, false, Color.MAGENTA);
+        showNotify(title, content + details, R.drawable.ic_notifications_black_24dp, 1, false, Color.YELLOW);
     }
 
     private void notifyChecking(boolean visible) {
@@ -254,6 +253,7 @@ public class AuroraService extends IntentService {
         // Create the request and open the connection
         connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
+        connection.setRequestProperty("connection", "close");
         connection.connect();
 
         try {
@@ -294,9 +294,9 @@ public class AuroraService extends IntentService {
 
     }
 
-    private AllData getDataFromJsonStr(String jsonStr) throws JSONException {
+    private DataContainer getDataFromJsonStr(String jsonStr) throws JSONException {
         JSONObject forecastJson = new JSONObject(jsonStr);
-        AllData allData = new AllData();
+        DataContainer dataContainer = new DataContainer();
         List<KpIndex> listKpIndex = new ArrayList<KpIndex>();
 
         // These are the names of the JSON objects that need to be extracted.
@@ -304,15 +304,15 @@ public class AuroraService extends IntentService {
         final String API_PROBABILITY = "probability";
 
         JSONObject probability = forecastJson.getJSONObject(API_PROBABILITY);
-        allData.setProbability(new Probability(probability.getInt("p"), probability.getLong("g"), probability.getLong("v")));
+        dataContainer.setProbability(new Probability(probability.getInt("p"), probability.getLong("g"), probability.getLong("v")));
 
         JSONArray kpArray = forecastJson.getJSONArray(API_KP);
         for (int i = 0; i < kpArray.length(); i++) {
             JSONObject kpForecast = kpArray.getJSONObject(i);
             listKpIndex.add(new KpIndex(kpForecast.getDouble("kp"), kpForecast.getLong("time")));
         }
-        allData.setKpIndexList(listKpIndex);
-        return allData;
+        dataContainer.setKpIndexList(listKpIndex);
+        return dataContainer;
     }
 
 
@@ -322,7 +322,7 @@ public class AuroraService extends IntentService {
         return netInfo != null && netInfo.isConnected();
     }
 
-    private void storeData(AllData data) {
+    private void storeData(DataContainer data) {
 
         sharedPreferences.edit().putInt("probability_p", data.getProbability().getProbability()).apply();
         sharedPreferences.edit().putLong("probability_g", data.getProbability().getTime()).apply();
@@ -333,6 +333,4 @@ public class AuroraService extends IntentService {
         sharedPreferences.edit().putLong("success", System.currentTimeMillis()).apply();
         sharedPreferences.edit().putLong("updated", System.currentTimeMillis()).apply();
     }
-
-
 }

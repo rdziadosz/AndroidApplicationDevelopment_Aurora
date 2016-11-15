@@ -10,7 +10,7 @@ import java.util.List;
  * Created by Radosław on 06.11.2016.
  */
 
-public class AllData {
+public class DataContainer {
 
     private List<KpIndex> kpIndexList;
     private Probability probability;

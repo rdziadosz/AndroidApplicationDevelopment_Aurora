@@ -2,6 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="eu.dziadosz.aurora.ui.MainActivity">
+
+    <item
+        android:id="@+id/action_refresh"
+        android:title="@string/button_refresh"
+        android:orderInCategory="10"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_sync_black_24dp" />
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

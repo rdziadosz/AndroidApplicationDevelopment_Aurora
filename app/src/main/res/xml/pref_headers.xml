@@ -3,11 +3,6 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="eu.dziadosz.aurora.ui.SettingsActivity$GeneralPreferenceFragment"
-        android:icon="@drawable/ic_info_black_24dp"
-        android:title="@string/pref_header_general" />
-
-    <header
         android:fragment="eu.dziadosz.aurora.ui.SettingsActivity$LocationPreferenceFragment"
         android:icon="@drawable/ic_location_on_black_24dp"
         android:title="@string/pref_header_location" />

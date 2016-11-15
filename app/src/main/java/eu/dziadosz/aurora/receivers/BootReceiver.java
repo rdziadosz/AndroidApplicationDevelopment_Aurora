@@ -19,8 +19,6 @@ import eu.dziadosz.aurora.services.AuroraService;
 
 public class BootReceiver extends BroadcastReceiver {
 
-    private final static String LOG_TAG = BootReceiver.class.getSimpleName();
-
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
